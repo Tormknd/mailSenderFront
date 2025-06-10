@@ -28,7 +28,7 @@ export default function App() {
     formData.append("stage", stage);
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/send", {
+      const response = await fetch("https://mailsenderapi-mmeo.onrender.com/send", {
         method: "POST",
         body: formData,
       });
