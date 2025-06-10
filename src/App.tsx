@@ -16,7 +16,7 @@ export default function App() {
     formData.append("stage", stage);
 
     try {
-      const response = await fetch("https://ton-backend.onrender.com/send", {
+      const response = await fetch("https://mailsenderapi-mmeo.onrender.com/send", {
         method: "POST",
         body: formData,
       });
