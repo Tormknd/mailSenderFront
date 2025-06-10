@@ -36,6 +36,13 @@ export default function App() {
     }
   };
 
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setFile(files[0]);
+    }
+  };
+
   return (
     <div style={{ padding: 20, fontFamily: "sans-serif", maxWidth: 500 }}>
       <h2>ISMAC - Envoi de mails automatiques</h2>
@@ -52,10 +59,7 @@ export default function App() {
       <input
         type="file"
         accept=".csv"
-        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          const file = e.target.files?.[0];
-          if (file) setFile(file);
-        }}
+        onChange={handleFileChange}
         style={{ marginBottom: 20 }}
       />
 
