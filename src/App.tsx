@@ -1,4 +1,6 @@
-import React, { useState, ChangeEvent } from "react";
+import React from "react";
+import { useState } from "react";
+import type { ChangeEvent } from "react";
 
 export default function App() {
   const [file, setFile] = useState<File | null>(null);
