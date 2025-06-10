@@ -1,9 +1,9 @@
-import { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 
 export default function App() {
-  const [file, setFile] = useState(null);
-  const [stage, setStage] = useState("");
-  const [status, setStatus] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [stage, setStage] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
 
   const handleSend = async () => {
     if (!file || !stage) {
@@ -44,7 +44,7 @@ export default function App() {
       <input
         type="text"
         value={stage}
-        onChange={(e) => setStage(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => setStage(e.target.value)}
         placeholder="Anu ou Chhaju"
         style={{ width: "100%", padding: "0.5em", marginBottom: 10 }}
       />
@@ -52,7 +52,10 @@ export default function App() {
       <input
         type="file"
         accept=".csv"
-        onChange={(e) => setFile(e.target.files[0])}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+          const file = e.target.files?.[0];
+          if (file) setFile(file);
+        }}
         style={{ marginBottom: 20 }}
       />
 
