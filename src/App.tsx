@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 
