@@ -1,13 +1,22 @@
 import React from "react";
 import { useState } from "react";
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+
+interface ApiResponse {
+  envoyes: number;
+  stage: string;
+  error?: string;
+  available_stages?: string[];
+}
 
 export default function App() {
   const [file, setFile] = useState<File | null>(null);
   const [stage, setStage] = useState<string>("");
   const [status, setStatus] = useState<string>("");
 
-  const handleSend = async () => {
+  const handleSend = async (e: FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    
     if (!file || !stage) {
       setStatus("Fichier et nom du stagiaire requis.");
       return;
@@ -23,18 +32,19 @@ export default function App() {
         body: formData,
       });
 
-      const data = await response.json();
+      const data: ApiResponse = await response.json();
 
       if (response.ok) {
         setStatus(`✅ ${data.envoyes} emails envoyés pour ${data.stage}`);
       } else {
         setStatus(`❌ Erreur : ${data.error || "Erreur inconnue"}`);
         if (data.available_stages) {
-          setStatus(prev => prev + `\nStages valides : ${data.available_stages.join(", ")}`);
+          setStatus(prev => prev + `\nStages valides : ${data.available_stages?.join(", ")}`);
         }
       }
     } catch (error) {
-      setStatus("❌ Erreur réseau ou serveur injoignable.");
+      const errorMessage = error instanceof Error ? error.message : "Erreur réseau ou serveur injoignable";
+      setStatus(`❌ ${errorMessage}`);
     }
   };
 
@@ -45,6 +55,10 @@ export default function App() {
     }
   };
 
+  const handleStageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setStage(e.target.value);
+  };
+
   return (
     <div style={{ padding: 20, fontFamily: "sans-serif", maxWidth: 500 }}>
       <h2>ISMAC - Envoi de mails automatiques</h2>
@@ -53,7 +67,7 @@ export default function App() {
       <input
         type="text"
         value={stage}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => setStage(e.target.value)}
+        onChange={handleStageChange}
         placeholder="Anu ou Chhaju"
         style={{ width: "100%", padding: "0.5em", marginBottom: 10 }}
       />
